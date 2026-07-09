@@ -34,21 +34,21 @@ class ApiClient {
   }
 
   login(email: string, password: string) {
-    return this.request<{ accessToken: string; user: import('./types').User }>('/auth/login', {
+    return this.request<{ accessToken: string; user: import('../types').User }>('/auth/login', {
       method: 'POST',
       body: JSON.stringify({ email, password }),
     });
   }
 
   register(name: string, email: string, password: string) {
-    return this.request<import('./types').User>('/users', {
+    return this.request<import('../types').User>('/users', {
       method: 'POST',
       body: JSON.stringify({ name, email, password }),
     });
   }
 
   me() {
-    return this.request<import('./types').User>('/auth/me');
+    return this.request<import('../types').User>('/auth/me');
   }
 
   getSpaces(params?: { search?: string; type?: string; amenities?: string }) {
@@ -57,43 +57,43 @@ class ApiClient {
     if (params?.type) query.set('type', params.type);
     if (params?.amenities) query.set('amenities', params.amenities);
     const qs = query.toString();
-    return this.request<import('./types').Space[]>(`/spaces${qs ? `?${qs}` : ''}`);
+    return this.request<import('../types').Space[]>(`/spaces${qs ? `?${qs}` : ''}`);
   }
 
   getSpace(id: number) {
-    return this.request<import('./types').Space>(`/spaces/${id}`);
+    return this.request<import('../types').Space>(`/spaces/${id}`);
   }
 
   getAvailability(id: number, date: string) {
-    return this.request<{ date: string; slots: import('./types').TimeSlot[] }>(
+    return this.request<{ date: string; slots: import('../types').TimeSlot[] }>(
       `/spaces/${id}/availability?date=${date}`,
     );
   }
 
   getAmenities() {
-    return this.request<import('./types').Amenity[]>('/amenities');
+    return this.request<import('../types').Amenity[]>('/amenities');
   }
 
   getMyReservations() {
-    return this.request<import('./types').Reservation[]>('/reservations/me');
+    return this.request<import('../types').Reservation[]>('/reservations/me');
   }
 
   createReservation(data: { spaceId: number; startTime: string; endTime: string }) {
-    return this.request<import('./types').Reservation>('/reservations', {
+    return this.request<import('../types').Reservation>('/reservations', {
       method: 'POST',
       body: JSON.stringify(data),
     });
   }
 
   updateReservationStatus(id: number, status: string) {
-    return this.request<import('./types').Reservation>(`/reservations/${id}/status`, {
+    return this.request<import('../types').Reservation>(`/reservations/${id}/status`, {
       method: 'PATCH',
       body: JSON.stringify({ status }),
     });
   }
 
   getFavorites() {
-    return this.request<import('./types').Favorite[]>('/favorites');
+    return this.request<import('../types').Favorite[]>('/favorites');
   }
 
   addFavorite(spaceId: number) {
@@ -105,14 +105,14 @@ class ApiClient {
   }
 
   createReview(data: { reservationId: number; rating: number; comment: string }) {
-    return this.request<import('./types').Review>('/reviews', {
+    return this.request<import('../types').Review>('/reviews', {
       method: 'POST',
       body: JSON.stringify(data),
     });
   }
 
   getNotifications() {
-    return this.request<import('./types').Notification[]>('/notifications');
+    return this.request<import('../types').Notification[]>('/notifications');
   }
 
   markNotificationAsRead(id: number) {

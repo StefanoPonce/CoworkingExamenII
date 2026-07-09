@@ -1,0 +1,21 @@
+{
+  "buildCommand": "npx prisma generate && npm run build",
+  "outputDirectory": "dist",
+  "installCommand": "npm install",
+  "functions": {
+    "api/index.ts": {
+      "runtime": "@vercel/node@4"
+    }
+  },
+  "routes": [
+    { "src": "/api/(.*)", "dest": "api/index.ts" },
+    { "src": "/auth/(.*)", "dest": "api/index.ts" },
+    { "src": "/spaces/(.*)", "dest": "api/index.ts" },
+    { "src": "/reservations/(.*)", "dest": "api/index.ts" },
+    { "src": "/reviews/(.*)", "dest": "api/index.ts" },
+    { "src": "/favorites/(.*)", "dest": "api/index.ts" },
+    { "src": "/amenities/(.*)", "dest": "api/index.ts" },
+    { "src": "/notifications/(.*)", "dest": "api/index.ts" },
+    { "src": "/users/(.*)", "dest": "api/index.ts" }
+  ]
+}

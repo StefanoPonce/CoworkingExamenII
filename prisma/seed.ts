@@ -177,6 +177,51 @@ async function main() {
       pricePerHour: 180,
       amenityList: ['Proyector'],
     },
+    {
+      name: 'Escritorio Premium - Todo Incluido',
+      description: 'Escritorio ejecutivo con Wi-Fi ultrarrápido, proyector portátil y cafetera personal. Lo último en productividad.',
+      location: 'Piso 4 · Ala Ejecutiva',
+      capacity: 1,
+      type: 'ESCRITORIO',
+      pricePerHour: 85,
+      amenityList: ['Wifi', 'Proyector', 'Café'],
+    },
+    {
+      name: 'Escritorio Solo Proyector',
+      description: 'Escritorio con monitor y proyector personal. Ideal para diseñadores y presentaciones individuales.',
+      location: 'Piso 2 · Ala Central',
+      capacity: 1,
+      type: 'ESCRITORIO',
+      pricePerHour: 55,
+      amenityList: ['Proyector'],
+    },
+    {
+      name: 'Auditorio Solo Café',
+      description: 'Auditorio con servicio de cafetería incluido. Perfecto para eventos informales y conferencias matutinas.',
+      location: 'Piso 1 · Ala Central',
+      capacity: 20,
+      type: 'AUDITORIO',
+      pricePerHour: 160,
+      amenityList: ['Café'],
+    },
+    {
+      name: 'Sala Ejecutiva Wifi + Proyector',
+      description: 'Sala mediana equipada con Wi-Fi de alta velocidad y proyector HD. Ideal para presentaciones de equipo.',
+      location: 'Piso 3 · Ala Ejecutiva',
+      capacity: 6,
+      type: 'SALA',
+      pricePerHour: 150,
+      amenityList: ['Wifi', 'Proyector'],
+    },
+    {
+      name: 'Sala Integral Todo Incluido',
+      description: 'Sala completa con Wi-Fi, proyector 4K y cafetera premium. La mejor opción para reuniones importantes con todo lo necesario.',
+      location: 'Piso 4 · Ala Central',
+      capacity: 10,
+      type: 'SALA',
+      pricePerHour: 300,
+      amenityList: ['Wifi', 'Proyector', 'Café'],
+    },
   ];
 
   const spaces: any[] = [];
@@ -244,14 +289,17 @@ async function main() {
     },
   }).catch(() => {});
 
-  await prisma.favorite.createMany({
-    data: [
-      { userId: user.id, spaceId: spaces[0].id },
-      { userId: user.id, spaceId: spaces[2].id },
-      { userId: user.id, spaceId: spaces[4].id },
-    ],
-    skipDuplicates: true,
-  });
+  for (const fav of [
+    { userId: user.id, spaceId: spaces[0].id },
+    { userId: user.id, spaceId: spaces[2].id },
+    { userId: user.id, spaceId: spaces[4].id },
+  ]) {
+    await prisma.favorite.upsert({
+      where: { userId_spaceId: { userId: fav.userId, spaceId: fav.spaceId } },
+      update: {},
+      create: fav,
+    });
+  }
 
   console.log('Seed completado:', { admin: admin.email, user: user.email, spaces: spaces.length });
 }
