@@ -1,7 +1,5 @@
 import { Module } from '@nestjs/common';
 import { ConfigModule } from '@nestjs/config';
-import { ServeStaticModule } from '@nestjs/serve-static';
-import { join } from 'path';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { AuthModule } from './auth/auth.module';
@@ -17,19 +15,6 @@ import { NotificationsModule } from './notifications/notifications.module';
 @Module({
   imports: [
     ConfigModule.forRoot({ isGlobal: true }),
-    ServeStaticModule.forRoot({
-      rootPath: join(__dirname, '..', 'frontend', 'dist'),
-      exclude: [
-        '/auth/(.*)',
-        '/spaces/(.*)',
-        '/reservations/(.*)',
-        '/reviews/(.*)',
-        '/favorites/(.*)',
-        '/amenities/(.*)',
-        '/notifications/(.*)',
-        '/users/(.*)',
-      ],
-    }),
     AuthModule,
     UsersModule,
     SpacesModule,

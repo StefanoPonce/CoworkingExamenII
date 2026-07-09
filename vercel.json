@@ -1,7 +1,6 @@
 {
-  "buildCommand": "cd frontend && npm install && npm run build && cd .. && npx prisma generate && npm run build",
+  "buildCommand": "npx prisma generate && npm run build",
   "installCommand": "npm install",
-  "outputDirectory": "dist",
   "rewrites": [
     { "source": "/(.*)", "destination": "/api/index" }
   ]
