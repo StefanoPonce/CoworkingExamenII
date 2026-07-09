@@ -1,5 +1,5 @@
 {
-  "buildCommand": "cd frontend && npm install && npm run build && cd .. && npm run build",
+  "buildCommand": "cd frontend && npm install && npm run build && cd .. && npx prisma generate && npm run build",
   "installCommand": "npm install",
   "outputDirectory": "dist",
   "rewrites": [

@@ -20,7 +20,6 @@ async function bootstrap() {
 
   await app.init();
 
-  // Serve frontend static files
   const frontendPath = join(__dirname, '..', 'frontend', 'dist');
   if (existsSync(frontendPath)) {
     server.use(express.static(frontendPath));
@@ -41,6 +40,14 @@ async function bootstrap() {
 let cachedServer;
 
 module.exports = async (req, res) => {
-  if (!cachedServer) cachedServer = await bootstrap();
+  if (!cachedServer) {
+    try {
+      cachedServer = await bootstrap();
+    } catch (err) {
+      console.error('Bootstrap error:', err);
+      res.status(500).json({ error: 'Internal server error', message: err.message });
+      return;
+    }
+  }
   cachedServer(req, res);
 };
