@@ -1,0 +1,113 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id           Int           @id @default(autoincrement())
+  name         String
+  email        String        @unique
+  password     String
+  role         String        @default("USER")
+  status       Boolean       @default(true)
+  reservations Reservation[]
+  reviews      Review[]
+  favorites    Favorite[]
+  notifications Notification[]
+  createdAt    DateTime      @default(now())
+  updatedAt    DateTime      @updatedAt
+}
+
+model Space {
+  id           Int            @id @default(autoincrement())
+  name         String
+  description  String?
+  location     String
+  capacity     Int
+  type         String
+  imageUrl     String?
+  pricePerHour Float          @default(120)
+  status       Boolean        @default(true)
+  reservations Reservation[]
+  amenities    SpaceAmenity[]
+  reviews      Review[]
+  favorites    Favorite[]
+  createdAt    DateTime       @default(now())
+  updatedAt    DateTime       @updatedAt
+}
+
+model Amenity {
+  id     Int            @id @default(autoincrement())
+  name   String         @unique
+  icon   String?
+  spaces SpaceAmenity[]
+}
+
+model SpaceAmenity {
+  spaceId   Int
+  amenityId Int
+  space     Space   @relation(fields: [spaceId], references: [id], onDelete: Cascade)
+  amenity   Amenity @relation(fields: [amenityId], references: [id], onDelete: Cascade)
+
+  @@id([spaceId, amenityId])
+}
+
+model Reservation {
+  id        Int      @id @default(autoincrement())
+  userId    Int
+  spaceId   Int
+  startTime DateTime
+  endTime   DateTime
+  status    String   @default("PENDING")
+  reason    String?
+
+  user      User     @relation(fields: [userId], references: [id])
+  space     Space    @relation(fields: [spaceId], references: [id])
+  review    Review?
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model Review {
+  id            Int         @id @default(autoincrement())
+  userId        Int
+  spaceId       Int
+  reservationId Int         @unique
+  rating        Int
+  comment       String
+
+  user          User        @relation(fields: [userId], references: [id])
+  space         Space       @relation(fields: [spaceId], references: [id])
+  reservation   Reservation @relation(fields: [reservationId], references: [id])
+
+  createdAt     DateTime    @default(now())
+}
+
+model Favorite {
+  userId    Int
+  spaceId   Int
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  space     Space    @relation(fields: [spaceId], references: [id], onDelete: Cascade)
+  createdAt DateTime @default(now())
+
+  @@id([userId, spaceId])
+}
+
+model Notification {
+  id        Int      @id @default(autoincrement())
+  userId    Int
+  title     String
+  message   String?
+  type      String   @default("INFO")
+  readAt    DateTime?
+  createdAt DateTime @default(now())
+
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([userId, readAt])
+}

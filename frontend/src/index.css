@@ -1,0 +1,26 @@
+@import "tailwindcss";
+
+@theme {
+  --color-nido-green: #2d5a4c;
+  --color-nido-green-light: #e2ece6;
+  --color-nido-green-dark: #1e3d34;
+  --color-nido-bg: #f8f9f7;
+  --color-nido-card: #eef3f0;
+  --font-sans: "Inter", system-ui, sans-serif;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  font-family: var(--font-sans);
+  background: var(--color-nido-bg);
+  color: #1a1a1a;
+  -webkit-font-smoothing: antialiased;
+}
+
+#root {
+  min-height: 100vh;
+}
