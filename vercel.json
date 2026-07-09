@@ -2,6 +2,6 @@
   "buildCommand": "npx prisma generate && npm run build",
   "installCommand": "npm install",
   "rewrites": [
-    { "source": "/(.*)", "destination": "/api/index" }
+    { "source": "/(.*)", "destination": "/api" }
   ]
 }
