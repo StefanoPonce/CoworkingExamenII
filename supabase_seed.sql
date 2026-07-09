@@ -59,3 +59,11 @@ INSERT INTO "Reservation" VALUES (1,2,1,now()+interval'5 days'+interval'11 hours
 INSERT INTO "Review" VALUES (1,2,1,3,5,'Excelente para trabajo en equipo la pizarra y el proyector funcionan perfecto.');
 
 INSERT INTO "Favorite" VALUES (2,1,now()),(2,3,now()),(2,5,now());
+
+-- Resetear secuencias auto-increment
+SELECT setval('"User_id_seq"', COALESCE((SELECT MAX(id) FROM "User"), 1));
+SELECT setval('"Space_id_seq"', COALESCE((SELECT MAX(id) FROM "Space"), 1));
+SELECT setval('"Amenity_id_seq"', COALESCE((SELECT MAX(id) FROM "Amenity"), 1));
+SELECT setval('"Reservation_id_seq"', COALESCE((SELECT MAX(id) FROM "Reservation"), 1));
+SELECT setval('"Review_id_seq"', COALESCE((SELECT MAX(id) FROM "Review"), 1));
+SELECT setval('"Notification_id_seq"', COALESCE((SELECT MAX(id) FROM "Notification"), 1));

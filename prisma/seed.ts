@@ -301,6 +301,14 @@ async function main() {
     });
   }
 
+  // Resetear secuencias auto-increment (PostgreSQL)
+  await prisma.$executeRawUnsafe(`SELECT setval('"User_id_seq"', COALESCE((SELECT MAX(id) FROM "User"), 1))`);
+  await prisma.$executeRawUnsafe(`SELECT setval('"Space_id_seq"', COALESCE((SELECT MAX(id) FROM "Space"), 1))`);
+  await prisma.$executeRawUnsafe(`SELECT setval('"Amenity_id_seq"', COALESCE((SELECT MAX(id) FROM "Amenity"), 1))`);
+  await prisma.$executeRawUnsafe(`SELECT setval('"Reservation_id_seq"', COALESCE((SELECT MAX(id) FROM "Reservation"), 1))`);
+  await prisma.$executeRawUnsafe(`SELECT setval('"Review_id_seq"', COALESCE((SELECT MAX(id) FROM "Review"), 1))`);
+  await prisma.$executeRawUnsafe(`SELECT setval('"Notification_id_seq"', COALESCE((SELECT MAX(id) FROM "Notification"), 1))`);
+
   console.log('Seed completado:', { admin: admin.email, user: user.email, spaces: spaces.length });
 }
 
